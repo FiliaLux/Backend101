@@ -1,21 +1,24 @@
 import { query, validationResult } from "express-validator";
+import Agent from "../models/Agent.js";
 
-export function index (req, res, next) {
-    //res.locals.appName = "NodeApp"
+export async function index (req, res, next) {
+    try {
+        //res.locals.appName = "NodeApp"
+        //throw new Error("fatal!");
     
-    res.locals.users = [
-        {name: "Smith", age: 45},
-        {name: "Brown", age: 28},
-        {name: "Jones", age: 34}
-    ];
+        res.locals.agents = await Agent.find();
+        
+        const now = new Date();
+        res.locals.isEven = (now.getSeconds() % 2) === 0;
+        res.locals.thisSecond = now.getSeconds();
+        
+        res.locals.code = "<script>alert(Injected!)</script>";
+        
+        res.render("home", /*{appName: "NodeApp"}*/);
     
-    const now = new Date();
-    res.locals.isEven = (now.getSeconds() % 2) === 0;
-    res.locals.thisSecond = now.getSeconds();
-    
-    res.locals.code = "<script>alert(Injected!)</script>";
-    
-    res.render("home", /*{appName: "NodeApp"}*/);
+    } catch (error) {
+        next(error);
+    }  
 };
 
 export function paramInRoute (req, res, next) {
