@@ -8,9 +8,7 @@ const userSchema = new Schema({
 
 // metodo del modelo
 
-userSchema.staticts.hashPassword = (clearPassword) => {
-    return bcrypt.hash(clearPassword, 7);
-};
+userSchema.statics.hashPassword = clearPassword => bcrypt.hash(clearPassword, 7);
 
 const User = mongoose.model("User", userSchema);
 

@@ -1,4 +1,6 @@
+
 <%- include("header.html") %>    
+<div class="container">    
     <h2>Bucles</h2>
     <% agents.forEach(agent => { %>
     <p><%= agent.name %> tiene <%= agent.age %> años</p>
@@ -13,3 +15,4 @@
 
     <%- code %>
 <%- include("footer.html") %>
+</div>

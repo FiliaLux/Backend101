@@ -2,8 +2,9 @@ import path from "node:path";
 import express from "express";
 import createError from "http-errors";
 import logger from "morgan";
-import * as homeController from "./controllers/homeController.js"
+import * as homeController from "./controllers/homeController.js";
 import connectMongoose from "./lib/connectMongoose.js";
+import * as loginController from "./controllers/loginController.js";
 
 await connectMongoose();
 console.log("Connected to mongodb");
@@ -26,6 +27,8 @@ app.use(express.static(path.join(import.meta.dirname, "public")));
  * Application routes
  */
 app.get("/", homeController.index);
+app.get("/login", loginController.index);
+// Ejemplos
 app.get("/param-in-route/:num", homeController.paramInRoute);
 app.get("/param-in-route-multiple/:product/size/:size/color/:color", homeController.paramInRouteMultiple);
 app.get("/param-in-query", homeController.validateParamInQuery, homeController.paramInQuery);
