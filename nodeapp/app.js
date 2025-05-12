@@ -5,6 +5,7 @@ import logger from "morgan";
 import * as homeController from "./controllers/homeController.js";
 import connectMongoose from "./lib/connectMongoose.js";
 import * as loginController from "./controllers/loginController.js";
+import * as sessionManager from "./lib/sessionManager.js";
 
 await connectMongoose();
 console.log("Connected to mongodb");
@@ -26,8 +27,14 @@ app.use(express.static(path.join(import.meta.dirname, "public")));
 /**
  * Application routes
  */
+app.use(sessionManager.middleware);
+app.use((req, res, next) => {
+    res.locals.session = req.session;
+    next();
+});
 app.get("/", homeController.index);
 app.get("/login", loginController.index);
+app.post("/login", loginController.postLogin);
 // Ejemplos
 app.get("/param-in-route/:num", homeController.paramInRoute);
 app.get("/param-in-route-multiple/:product/size/:size/color/:color", homeController.paramInRouteMultiple);
