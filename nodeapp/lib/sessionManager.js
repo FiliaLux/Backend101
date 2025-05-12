@@ -1,4 +1,5 @@
 import session from "express-session";
+import MongoStore from "connect-mongo";
 
 const INACTIVITY_EXPIRATION_2_DAYS = 1000 * 60 * 60 * 24 * 2;
 
@@ -8,5 +9,21 @@ export const middleware = session({
     secret: "VkF8*b4FVYm@56WSVRBVCnBUDIr#*bqn&&*++j",
     savedUninitialized: true,
     resave: false,
-    cookie: {maxAge: INACTIVITY_EXPIRATION_2_DAYS}
+    cookie: {maxAge: INACTIVITY_EXPIRATION_2_DAYS},
+    store: MongoStore.create({
+        mongoUrl: "mongodb://localhost/cursonode"
+    })
 });
+
+export function useSessionInViews (req, res, next) {
+    res.locals.session = req.session;
+    next();
+} 
+
+export function guard (req, res, next) {
+    if (!req.session.userID) {
+        res.redirect(`/login?redir=${req.url}`);
+        return
+    } 
+    next()
+}
