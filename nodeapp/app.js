@@ -36,6 +36,7 @@ app.post("/login", loginController.postLogin);
 app.get("/logout", loginController.logout);
 app.get("/new/agent", sessionManager.guard, agentsController.index);
 app.post("/new/agent", sessionManager.guard, agentsController.postNew);
+app.get("/agents/delete/:agentID", sessionManager.guard, agentsController.deleteAgent);
 // Ejemplos
 app.get("/param-in-route/:num", homeController.paramInRoute);
 app.get("/param-in-route-multiple/:product/size/:size/color/:color", homeController.paramInRouteMultiple);

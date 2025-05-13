@@ -25,3 +25,16 @@ export async function postNew (req, res, next) {
     }
 };
 
+export async function deleteAgent (req, res, next) {
+    try {
+        
+        const agentID = req.params.agentID;
+        const userID = req.session.userID;
+        await Agent.deleteOne({_id: agentID, owner: userID});
+
+        res.redirect("/");
+
+    } catch (error) {
+        next(error)
+    }
+};
