@@ -5,8 +5,9 @@ export async function index (req, res, next) {
     try {
         //res.locals.appName = "NodeApp"
         //throw new Error("fatal!");
-    
-        res.locals.agents = await Agent.find();
+        const userID = req.session.userID
+        
+        res.locals.agents = await Agent.find({owner: userID});
         
         const now = new Date();
         res.locals.isEven = (now.getSeconds() % 2) === 0;
